@@ -1,0 +1,22 @@
+services:
+  submission:
+    build: submission
+    command: python -u webservice.py
+    restart: "on-failure: 3"
+    # ports: ["54321:27017"]
+    networks: [tuples_competition]
+    volumes:
+      - ./submission:/app
+
+  evaluator:
+    build: evaluator
+    command: python -u webservice.py
+    restart: "on-failure: 3"
+    ports: ["8088:80"]
+    networks: [tuples_competition]
+    volumes:
+      - ./evaluator:/app
+
+networks:
+  tuples_competition:
+    driver: bridge

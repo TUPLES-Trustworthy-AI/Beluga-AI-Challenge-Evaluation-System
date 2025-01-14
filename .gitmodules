@@ -1,0 +1,6 @@
+[submodule "evaluator"]
+	path = evaluator
+	url = https://github.com/TUPLES-Trustworthy-AI/Beluga-AI-Challenge-Evaluator.git
+[submodule "submission"]
+	path = submission
+	url = https://github.com/TUPLES-Trustworthy-AI/Beluga-AI-Challenge-Submission-Python.git
