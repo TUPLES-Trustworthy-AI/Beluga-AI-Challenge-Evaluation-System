@@ -54,7 +54,9 @@ The evaluator WS is a replica of the one used for the actual evaluation infrastr
 
 This can be done by editing the file `evaluator/conf.toml`, which includes the following fields:
 
-* In the `[infrastructure]` section, there is single configuration option (i.e. `send_to_orchestrator`) that should alway be set at `false`
+* In the `[infrastructure]` section, there are two configuration options:
+  - `send_to_orchestrator`: this should alway be set at `false`, since it is only needed for the online evaluation system
+  - `resume`: if `true`, starting the evaluation for a submission id preserves any past results and the submission WS is called only on the problems that had not yet been solved. If `false` (the default behavior), all past results for a submission id are deleted before evaluaing the same submission again
 * The `[evaluation]` section includes multiple options:
   - `time_limit`: the time limit, in seconds, for the construction of each plan (deterministic challenge) or for generating the actions in a single simulation (probabilistic challenge).
   - `max_steps`: the maximum number of steps to be executed in any plan; affects both the deterministic and the probabilistic challege
@@ -62,6 +64,7 @@ This can be done by editing the file `evaluator/conf.toml`, which includes the f
   - `alpha`: the value of the _alpha_ parameter in the scoring function
   - `beta`: the value of the _beta_ parameter in the scoring function
   - `seed`: the seed for the main random number generator
+  - `reboot_time_limit`: leave this to the defautl (it is used in the online evaluation system to avoid repeating a full evaluation when the submission container is killed -- e.g. due to exceeded resource limits)
 
 By default, all parameters are configured for (relatively) quick dry runs. Commented parameters are set to their default values, which are usually the ones used in the competition.
 
@@ -93,7 +96,7 @@ For the probabilistic challenge, use instead:
 curl http://0.0.0.0:8088/run\?submission_id\=-2\&competition_type\=scalability_probabilistic\&optit_endpoint\=http://0.0.0.0:81\&competitor_model_endpoint\=http://submission:80 -X POST
 ```
 
-The `submission_id` parameter can be set to any integer number for a local evaluation. In the example command, we use -1 for a deterministic evaluation and -2 for probabilistic one, so that running one command does not overwrite the output of the other.
+The `submission_id` parameter can be set to any integer number for a local evaluation. In the example command, we use -1 for a deterministic evaluation and -2 for probabilistic one, so that running one command does not overwrite the output of the other. Be mindful, however, that if you set the configuration parameter `resume` to `true`, only the past results for the same submission id will be recovered.
 
 The web service containers can be removed as usual in Docker Compose by running:
 
