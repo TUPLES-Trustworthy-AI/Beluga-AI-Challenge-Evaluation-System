@@ -56,8 +56,10 @@ This can be done by editing the file `evaluator/conf.toml`, which includes the f
 
 * In the `[infrastructure]` section, there are two configuration options:
   - `send_to_orchestrator`: this should alway be set at `false`, since it is only needed for the online evaluation system
-  - `resume`: if `true`, starting the evaluation for a submission id preserves any past results and the submission WS is called only on the problems that had not yet been solved. If `false` (the default behavior), all past results for a submission id are deleted before evaluaing the same submission again
+  - `resume`: if `1`, starting the evaluation for a submission id preserves any past results and the submission WS is called only on the problems that had not yet been solved. If `0` (the default behavior), all past results for a submission id are deleted before evaluating the same submission again. There's a third allowed value, i.e. `2`, which is for internal use.
 * The `[evaluation]` section includes multiple options:
+  - `problem_dir`: this specifies the directory with the benchmark for the deterministic problem. It is recommended to keep it to its current value or to keep it commented; both cases result in the training dataset being used
+  - `problem_dir_prob`: this specifies the directory with the benchmark for the probabilistic problem. It is recommended to keep it to its current value or to keep it commented; both cases result in the training dataset being used
   - `time_limit`: the time limit, in seconds, for the construction of each plan (deterministic challenge) or for generating the actions in a single simulation (probabilistic challenge).
   - `max_steps`: the maximum number of steps to be executed in any plan; affects both the deterministic and the probabilistic challege
   - `nsamples`: the number of samples (simulations) for the probabilistic challenge
