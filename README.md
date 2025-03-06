@@ -57,20 +57,20 @@ This can be done by editing the file `evaluator/conf.toml`, which includes the f
 * In the `[infrastructure]` section, there are two configuration options:
   - `send_to_orchestrator`: this should alway be set at `false`, since it is only needed for the online evaluation system
   - `resume`: if `1`, starting the evaluation for a submission id preserves any past results and the submission WS is called only on the problems that had not yet been solved. If `0` (the default behavior), all past results for a submission id are deleted before evaluating the same submission again. There's a third allowed value, i.e. `2`, which is for internal use.
+  - `reboot_time_limit`: leave this to the default (it is used in the online evaluation system to avoid repeating a full evaluation when the submission container is killed -- e.g. due to exceeded resource limits)
 * The `[evaluation]` section includes multiple options:
   - `problem_dir`: this specifies the directory with the benchmark for the deterministic problem. It is recommended to keep it to its current value or to keep it commented; both cases result in the training dataset being used
   - `problem_dir_prob`: this specifies the directory with the benchmark for the probabilistic problem. It is recommended to keep it to its current value or to keep it commented; both cases result in the training dataset being used
-  - `time_limit`: the time limit, in seconds, for the construction of each plan (deterministic challenge) or for generating the actions in a single simulation (probabilistic challenge).
-  - `max_steps`: the maximum number of steps to be executed in any plan; affects both the deterministic and the probabilistic challege
+  - `time_limit`: the time limit, in seconds, for the construction of each plan (deterministic challenge) or for generating actions in _all_ the simulations for a single problem (probabilistic challenge).
+  - `max_steps`: the maximum number of steps (per jig) to be executed in any plan or simulation; affects both the deterministic and the probabilistic challege
   - `nsamples`: the number of samples (simulations) for the probabilistic challenge
   - `alpha`: the value of the _alpha_ parameter in the scoring function
   - `beta`: the value of the _beta_ parameter in the scoring function
   - `seed`: the seed for the main random number generator
-  - `reboot_time_limit`: leave this to the defautl (it is used in the online evaluation system to avoid repeating a full evaluation when the submission container is killed -- e.g. due to exceeded resource limits)
 
-By default, all parameters are configured for (relatively) quick dry runs. Commented parameters are set to their default values, which are usually the ones used in the competition.
+By default, all parameters are configured for quick dry runs. In particular, the step limit and number of samples are kep intentionally very small. Once your dry run is successful, you can perform a more realistic test by just commenting all options in the `[evaluation]` section, except for the `seed` parameter: commented parameters are set to their default values, which are the ones used in the competition.
 
-As an exception, commenting the `seed` parameter enables the default numpy RNG initialization, but during the official evaluation a fixed (undisclosed) seed will be used. During local runs, we recommended using a fixed seed for predictable results or easier debugging, and commenting the seed if the goal is testing the robustness of the submission code.
+The exception is the `seed` parameter that, if left commented, enables the default numpy RNG initialization. During the official evaluation a fixed (undisclosed) seed will however be used. During local runs, we recommended using a fixed seed for predictable results or easier debugging, and commenting the seed if the goal is testing the robustness of the submission code.
 
 # Starting the Evaluation
 
